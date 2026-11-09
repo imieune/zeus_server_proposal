@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>제우스:오만의 신 서버 이전 지원 프로젝트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f6f7f6; --surface:#ffffff; --ink:#18201f; --muted:#5b6765; --line:#dde3e1;
+  --accent:#0f7a6e; --accent-soft:#e2f1ee; --accent-ink:#0b5a51;
+  --good:#1f7a3a; --good-bg:#e5f3e8; --warn:#9a5b00; --warn-bg:#fdf0dc;
+  --blank:#fffbe8; --blank-line:#e6d9a2;
+  --sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111615; --surface:#182120; --ink:#e4ebe9; --muted:#97a6a3; --line:#2a3634;
+  --accent:#46c2b2; --accent-soft:#16302c; --accent-ink:#7fdccf;
+  --good:#6fcf88; --good-bg:#16301e; --warn:#f0b35a; --warn-bg:#33260f;
+  --blank:#2a2714; --blank-line:#5a5024; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111615; --surface:#182120; --ink:#e4ebe9; --muted:#97a6a3; --line:#2a3634;
+  --accent:#46c2b2; --accent-soft:#16302c; --accent-ink:#7fdccf;
+  --good:#6fcf88; --good-bg:#16301e; --warn:#f0b35a; --warn-bg:#33260f;
+  --blank:#2a2714; --blank-line:#5a5024; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.7;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 64px}
+.wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+a{color:var(--accent-ink)}
+header .eyebrow{font-size:12px;letter-spacing:.08em;color:var(--accent-ink);font-weight:600}
+h1{font-size:27px;line-height:1.3;margin:4px 0 4px;text-wrap:balance}
+header .copy{font-size:16px;font-weight:600;color:var(--accent-ink);margin:0 0 8px}
+.meta{color:var(--muted);font-size:13px;display:flex;flex-wrap:wrap;gap:4px 14px}
+.meta .lbl{color:var(--ink);font-weight:700;margin-right:4px}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:1px 9px;border-radius:999px;white-space:nowrap}
+.pill.good{background:var(--good-bg);color:var(--good)}
+.pill.neutral{background:var(--accent-soft);color:var(--accent-ink)}
+.pill.warn{background:var(--warn-bg);color:var(--warn)}
+nav.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);overflow-x:auto;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+nav.tabs button{font:inherit;font-size:14px;background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);padding:12px 14px 10px;cursor:pointer;white-space:nowrap}
+nav.tabs button .n{font-family:var(--mono);font-size:12px;margin-right:6px}
+nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+nav.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+section.panel{display:flex;flex-direction:column;gap:18px}
+[hidden]{display:none!important}
+.panel h2{font-size:21px;margin:0}
+.panel h3{font-size:15px;margin:0 0 8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.block{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 18px;min-width:0}
+.block ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.block p{margin:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:420px}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--line)}
+th{font-size:12px;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.name{font-weight:600;white-space:nowrap}
+td.num,th.num{font-family:var(--mono);white-space:nowrap;text-align:right}
+tr.pick td{background:var(--accent-soft)}
+tr.total td{font-weight:700;border-top:2px solid var(--line)}
+.blank{background:var(--blank);border:1px dashed var(--blank-line);border-radius:4px;padding:0 6px;color:var(--muted);font-size:13px;white-space:nowrap}
+.note{font-size:13px;color:var(--muted);margin-top:8px!important}
+.callout{border-left:3px solid var(--good);background:var(--good-bg);padding:12px 16px;border-radius:0 6px 6px 0}
+.callout.warn{border-left-color:var(--warn);background:var(--warn-bg)}
+.callout ul{margin:0;padding-left:18px}
+.callout p{margin:0}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px}
+.flow span{background:var(--accent-soft);color:var(--accent-ink);border-radius:999px;padding:4px 12px;font-weight:600;line-height:1.4}
+.flow span.end{background:var(--accent);color:var(--surface)}
+.flow small{display:block;font-weight:500;font-size:11px;opacity:.8}
+.flow i{font-style:normal;color:var(--muted)}
+.brand{border:1px solid var(--line);border-radius:6px;padding:12px 14px;background:var(--surface)}
+.brand.on{border:2px solid var(--accent)}
+.brand .k{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.04em}
+.brand .v{font-size:15px;font-weight:700;line-height:1.45;margin-top:2px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
+.stat small{display:block;font-size:12px;color:var(--muted)}
+.stat b{font-size:17px}
+footer{text-align:center;font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:20px}
+@media (prefers-reduced-motion:no-preference){section.panel{animation:fade .18s ease-out}@keyframes fade{from{opacity:.4}to{opacity:1}}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">ITEMMANIA × 인플루언서 제휴 · 내부 기안</div>
+  <h1>제우스:오만의 신 서버 이전 지원 프로젝트</h1>
+  <p class="copy">제우스 이사 준비는? 아이템매니아</p>
+  <div class="meta">
+    <span><b class="lbl">기안</b>마케팅팀 강은혜</span>
+    <span><b class="lbl">진행 BJ</b><span class="blank">BJ명</span></span>
+    <span><b class="lbl">서버이전</b>11/19(목) ~ 11/22(일)</span>
+    <span><b class="lbl">라이브</b>11/19(목) 서버이전 당일</span>
+    <span id="today">2026.11.09</span>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="기획 항목">
+  <button role="tab" id="t-summary" aria-controls="summary" aria-selected="true"><span class="n">1</span>요약</button>
+  <button role="tab" id="t-model" aria-controls="model" aria-selected="false"><span class="n">2</span>구성</button>
+  <button role="tab" id="t-ops" aria-controls="ops" aria-selected="false"><span class="n">3</span>운영</button>
+  <button role="tab" id="t-budget" aria-controls="budget" aria-selected="false"><span class="n">4</span>예산 · 성과</button>
+  <button role="tab" id="t-plan" aria-controls="plan" aria-selected="false"><span class="n">5</span>일정 · 확인</button>
+</nav>
+
+<!-- 1 요약 -->
+<section class="panel" id="summary" role="tabpanel" aria-labelledby="t-summary">
+  <h2>요약</h2>
+  <div class="block" style="border-left:4px solid var(--accent)">
+    <p><b>제우스 서버이전 기간에 BJ 1명과 '러브하우스' 방송을 열어, 당첨자 본캐의 이사 세팅을 매니아 매물로 지원하고, 판매수수료 할인 이벤트로 부족한 제우스 매물을 미리 확보합니다.</b></p>
+  </div>
+
+  <div class="block"><h3>기획 배경</h3><ul>
+    <li><b>서버이전 수요</b> — 서버이전 기간에는 본캐 장비 보강과 정리 매물 판매가 함께 늘어납니다.</li>
+    <li><b>제우스 매물 부족</b> — 현재 매니아 내 제우스 매물이 적어 수요를 거래로 연결하기 어렵습니다.</li>
+    <li><b>배너 광고의 한계</b> — 노출만으로는 전환이 어려워, 실제 거래 과정을 방송으로 보여주는 방식이 필요합니다.</li>
+  </ul></div>
+
+  <div class="grid3">
+    <div class="brand"><div class="k">메인 카피</div><div class="v">제우스 이사 준비는? 아이템매니아</div></div>
+    <div class="brand on"><div class="k">기획명</div><div class="v">제우스:오만의 신 서버 이전 지원 프로젝트</div></div>
+    <div class="brand"><div class="k">방송 코너명</div><div class="v">제우스 이삿짐센터 by 아이템매니아</div></div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><small>진행 BJ</small><b>1명</b></div>
+    <div class="stat"><small>당첨</small><b>방송 1회당 1명</b></div>
+    <div class="stat"><small>라이브</small><b>11/19 서버이전 당일</b></div>
+    <div class="stat"><small>비용</small><b>지원금 · 수고비 협의 후 확정</b></div>
+  </div>
+</section>
+
+<!-- 2 구성 -->
+<section class="panel" id="model" role="tabpanel" aria-labelledby="t-model" hidden>
+  <h2>구성</h2>
+  <p class="note" style="margin:0!important">러브하우스 = BJ가 혈원 캐릭터의 스펙업을 지원하는, 반응이 검증된 방송 포맷 (레퍼런스 <a href="https://youtu.be/M_l_Vw106yU?si=GzR3jNl6qW8dK9lH" target="_blank" rel="noopener">1</a> · <a href="https://youtu.be/O084Q-2Z_l0?si=m5T1q8-hJt7zE0B9" target="_blank" rel="noopener">2</a>)</p>
+
+  <div class="block"><h3>이벤트 1. 이사 사연 당첨자 아이템 지원 <span class="pill good">라이브 방송</span></h3>
+    <div class="tbl"><table>
+      <tbody>
+        <tr><td class="name">대상</td><td>사연 접수자 중 매니아 추첨 당첨자 (제우스 본캐 보유)</td></tr>
+        <tr class="pick"><td class="name">지원</td><td>필요 아이템을 현재 서버 매물로 구매 → 장착 → 방송 중 서버이전</td></tr>
+        <tr><td class="name">한도</td><td><span class="blank">아이템 시세 확인 후 확정</span></td></tr>
+        <tr><td class="name">집행</td><td>매니아가 직접 결제해 당첨자 캐릭터로 인계 (현금성 지급 없음)</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">계정이 아닌 아이템인 이유 : 접수자 대부분이 본계정을 가진 현역 유저이기 때문입니다.</p>
+  </div>
+
+  <div class="block"><h3>이벤트 2. 서버이전 판매수수료 할인 <span class="pill neutral">판매자 대상</span></h3>
+    <p style="margin-bottom:10px">기간 중 등록한 제우스 아이템·계정 매물이 <b>팔리면</b> 판매수수료를 할인합니다.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>구간</th><th>등록 기간</th><th>혜택</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td class="name">얼리버드</td><td>11/11 ~ 11/18</td><td>최대 할인 <span class="blank">할인율</span></td></tr>
+        <tr><td class="name">이전 기간</td><td>11/19 ~ 11/22</td><td>기본 할인 <span class="blank">할인율</span></td></tr>
+        <tr><td class="name">방송 구매 매물</td><td>방송 중 거래 완료</td><td>판매수수료 면제</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">함께 진행 : 이사 수요 TOP 아이템 공개 · 제우스 판매자 CRM · BJ 공지 안내</p>
+  </div>
+</section>
+
+<!-- 3 운영 -->
+<section class="panel" id="ops" role="tabpanel" aria-labelledby="t-ops" hidden>
+  <h2>운영</h2>
+  <div class="block">
+    <div class="flow">
+      <span>수수료 할인 이벤트<small>11/11~</small></span><i>→</i>
+      <span>사연 접수<small>11/14~17</small></span><i>→</i>
+      <span>추첨 · 검증<small>11/18</small></span><i>→</i>
+      <span class="end">라이브<small>11/19 서버이전 당일</small></span><i>→</i>
+      <span>2차 영상<small>방송 후</small></span><i>→</i>
+      <span class="end">성과 판단<small>12/1</small></span>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="block"><h3>접수 · 추첨</h3><ul>
+      <li>로그인만으로 접수, 접수 혜택 없음</li>
+      <li>매니아 단독 전산 추첨 (BJ 관여 없음) — 당첨 1명 + 예비 2명</li>
+      <li>당첨자 캐릭터 인증 캡처로 접수 내용 대조, 허위 시 취소 후 예비 승계</li>
+      <li>유효 접수자 수 · 당첨자 ID(마스킹) 공지</li>
+    </ul></div>
+    <div class="block"><h3>BJ 이행 조건</h3><ul>
+      <li>방송 24시간 전 사전 공지 (접수 링크 · 추첨 방식)</li>
+      <li>코너 40분 이상 송출, QR · 단축 URL, 유료광고 표시</li>
+      <li>방송 클립 2차 사용권</li>
+      <li>롱폼 + 쇼츠 업로드 <span class="blank">기한</span></li>
+    </ul></div>
+  </div>
+
+  <div class="block"><h3>'제우스 이삿짐센터' 라이브 (약 50분)</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>코너</th><th>내용</th><th>시청자 참여</th></tr></thead>
+      <tbody>
+        <tr><td class="name">이사 견적</td><td>당첨자 본캐 소개, 필요 아이템 확인</td><td>쿠폰 코드 예고</td></tr>
+        <tr class="pick"><td class="name">이삿짐 쇼핑</td><td>매니아 매물 비교 → 구매 → 장착</td><td>1차 쿠폰 코드, 채팅 추첨</td></tr>
+        <tr><td class="name">새 서버 입주식</td><td>방송 중 서버이전 → 첫 사냥</td><td>파이널 코드, 수수료 할인 이벤트 안내</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">게릴라 이사 쿠폰 : 화면 QR·단축 URL → 모바일 등록 페이지 → 코드 입력 시 할인쿠폰 지급 (계정당 1회, 현금화 불가) <span class="blank">금액</span></p>
+  </div>
+
+  <div class="callout warn"><ul>
+    <li>방송은 서버이전 오픈 시각 이후로 잡고, 당일 점검 연장 · 접속 대기에 대비해 예비 시간을 둡니다.</li>
+    <li>매물이 부족하면 매니아가 기간 내 대리 구매해 인계합니다.</li>
+  </ul></div>
+</section>
+
+<!-- 4 예산 · 성과 -->
+<section class="panel" id="budget" role="tabpanel" aria-labelledby="t-budget" hidden>
+  <h2>예산 · 성과</h2>
+  <div class="block"><h3>비용 구조 <span class="pill warn">방송 1회 / 당첨 1명</span></h3>
+    <div class="tbl"><table>
+      <thead><tr><th>구분</th><th>항목</th><th>금액 · 산정 방식</th></tr></thead>
+      <tbody>
+        <tr><td class="name">고정</td><td>아이템 지원금</td><td>당첨자 1명분 <span class="blank">아이템 시세 확인 후 확정</span></td></tr>
+        <tr><td class="name">고정</td><td>BJ 수고비</td><td>방송 + 2차 영상 포함 <span class="blank">BJ 협의 후 확정</span></td></tr>
+        <tr><td class="name">변동</td><td>게릴라 이사 쿠폰</td><td>실제 사용 건수 × 쿠폰 금액 <span class="blank">쿠폰 금액</span></td></tr>
+        <tr><td class="name">변동</td><td>채팅 추첨 쿠폰</td><td>실제 사용 건수 × 쿠폰 금액 <span class="blank">쿠폰 금액 · 인원</span></td></tr>
+        <tr><td class="name">변동</td><td>판매수수료 할인 · 면제</td><td>판매 완료 건의 수수료 × 할인율 (현금 지출 아닌 매출 차감) <span class="blank">할인율</span></td></tr>
+        <tr><td class="name">미정</td><td>제세공과금</td><td>처리 방식(회사 대납 / BJ 정산 등) 확정 후 산정</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">변동 비용은 쿠폰 총 발급 수량과 할인 적용 상한을 정해 최대치를 관리합니다. 총비용 = 고정(지원금 + 수고비) + 변동분(사용 실적) + 제세공과금.</p>
+  </div>
+
+  <div class="block"><h3>성과 지표</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>지표</th><th>비교 기준</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>제우스 매물 등록 · 판매 건수</td><td>이벤트 전</td></tr>
+        <tr><td>제우스 거래 건수 · 거래액</td><td>지난 서버이전</td></tr>
+        <tr><td>쿠폰 등록자 7일 내 결제 전환율</td><td>가설 5~8%</td></tr>
+        <tr><td>QR · URL 유입, 신규 가입, 영상 조회수</td><td>실측</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="callout"><p><b>확대 기준</b> — 매물·거래가 늘고 전환율이 가설치에 도달하면 다른 서버이전 게임으로 확대합니다. 노출 외에도 배너 단가 협상 데이터, 광고 소재, 제우스 회원, 매물 기반이 남습니다.</p></div>
+</section>
+
+<!-- 5 일정 · 확인 -->
+<section class="panel" id="plan" role="tabpanel" aria-labelledby="t-plan" hidden>
+  <h2>일정 · 확인</h2>
+  <div class="block"><h3>일정</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>날짜</th><th>업무</th></tr></thead>
+      <tbody>
+        <tr><td class="name">11/9 ~ 10</td><td>기안 승인, 확인 사항 점검, BJ 컨택, 할인율 확정</td></tr>
+        <tr class="pick"><td class="name">11/11</td><td>수수료 할인 이벤트 오픈, CRM 발송</td></tr>
+        <tr><td class="name">11/10 ~ 13</td><td>BJ 합의, 랜딩 · QR · 쿠폰 페이지 개발, 오버레이 제작</td></tr>
+        <tr><td class="name">11/14 ~ 17</td><td>BJ 사전 공지, 사연 접수</td></tr>
+        <tr><td class="name">11/18</td><td>추첨 · 당첨자 검증, 필요 아이템 매물 점검</td></tr>
+        <tr class="pick"><td class="name">11/19</td><td><b>서버이전 당일 라이브 방송</b></td></tr>
+        <tr><td class="name">11/20 ~ 26</td><td>정산, 2차 영상 업로드 확인, 7일 전환 추적</td></tr>
+        <tr><td class="name">12/1</td><td>성과 리포트, 확대 여부 판단</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="block"><h3>사전 확인</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>항목</th><th>확인 내용</th><th>결과</th></tr></thead>
+      <tbody>
+        <tr><td class="name">게임사 정책 <span class="pill warn">최우선</span></td><td>약관상 외부 거래 금지 확인됨 → 제재 수위 · 제재 CS 이력 확인</td><td><span class="blank">확인 필요</span></td></tr>
+        <tr><td class="name">서버이전 <span class="pill warn">최우선</span></td><td>11/19 오픈 시각 · 점검 일정, 아이템 동반 이동, 이전 처리 시간</td><td><span class="blank">확인 필요</span></td></tr>
+        <tr><td class="name">수수료 할인 <span class="pill warn">최우선</span></td><td>시스템 적용 가능 여부 (불가 시 사후 환급)</td><td><span class="blank">확인 필요</span></td></tr>
+        <tr><td class="name">아이템 시세</td><td>1인 지원 한도 확정</td><td><span class="blank">확인 필요</span></td></tr>
+        <tr><td class="name">세무</td><td>제세공과금 처리 방식과 실제 비용</td><td><span class="blank">확인 필요</span></td></tr>
+        <tr><td class="name">BJ</td><td>11/19 당일 방송 가능 시간, 수고비, 영상 기한, 게임사 파트너 계약 여부</td><td><span class="blank">확인 필요</span></td></tr>
+        <tr><td class="name">개발 · 개인정보</td><td>11/13 완료 가능 여부, 당첨자 정보 보관 기준</td><td><span class="blank">확인 필요</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<footer>(주)아이엠아이 마케팅팀 · 기안 강은혜</footer>
+</div>
+
+<script>
+(function(){
+  try{
+    const p=new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+    const g=t=>p.find(x=>x.type===t).value;
+    document.getElementById('today').textContent=g('year')+'.'+g('month')+'.'+g('day');
+  }catch(e){}
+})();
+(function(){
+  const ids=["summary","model","ops","budget","plan"];
+  const tabs=[...document.querySelectorAll('[role="tab"]')];
+  function show(id,push){
+    if(!ids.includes(id)) id="summary";
+    tabs.forEach(t=>t.setAttribute("aria-selected",String(t.getAttribute("aria-controls")===id)));
+    ids.forEach(p=>{document.getElementById(p).hidden=(p!==id)});
+    if(push && location.hash!=="#"+id){try{history.replaceState(null,"","#"+id)}catch(e){}}
+  }
+  tabs.forEach((t,i)=>{
+    t.addEventListener("click",()=>{show(t.getAttribute("aria-controls"),true);window.scrollTo({top:0})});
+    t.addEventListener("keydown",e=>{
+      if(e.key!=="ArrowRight"&&e.key!=="ArrowLeft")return;
+      const n=tabs[(i+(e.key==="ArrowRight"?1:-1)+tabs.length)%tabs.length];
+      n.focus();n.click();
+    });
+  });
+  show(location.hash.slice(1),false);
+  addEventListener("hashchange",()=>show(location.hash.slice(1),false));
+})();
+</script>
+</body>
+</html>
