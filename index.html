@@ -96,6 +96,9 @@ tr.total td{font-weight:700;border-top:2px solid var(--line)}
 .phase li .d{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap}
 .phase li.key{font-weight:700}
 .phase li.key .d{color:var(--accent-ink)}
+.due{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.due li{display:grid;grid-template-columns:48px 1fr;gap:8px;align-items:baseline}
+.due .d{font-family:var(--mono);font-size:12px;color:var(--accent-ink);font-weight:600}
 footer{text-align:center;font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:20px}
 @media (prefers-reduced-motion:no-preference){section.panel{animation:fade .18s ease-out}@keyframes fade{from{opacity:.4}to{opacity:1}}}
 </style>
@@ -302,15 +305,22 @@ footer{text-align:center;font-size:13px;color:var(--muted);border-top:1px solid 
   <p class="note" style="margin-top:-6px!important">매물 부족 시 11/18 점검에서 대체 아이템 조정 · 쿠폰 집계는 방송일 + 7일</p>
 
   <div class="block"><h3>팀별 제작 요청</h3>
-    <div class="tbl"><table>
-      <thead><tr><th>팀</th><th>제작물</th><th>필요 시점</th><th>결과</th></tr></thead>
+    <div class="tbl"><table style="min-width:0">
+      <thead><tr><th>팀</th><th>제작물 · 필요 시점</th></tr></thead>
       <tbody>
-        <tr><td class="name">디자인</td><td>사연 접수 페이지 · 얼리버드 공지 · CRM 이미지</td><td>11/12</td><td><span class="blank">확인 필요</span></td></tr>
-        <tr><td class="name">개발</td><td>사연 접수 페이지 (로그인 · 동의 · 캡처 업로드)</td><td>11/13</td><td><span class="blank">확인 필요</span></td></tr>
-        <tr><td class="name">개발</td><td>얼리버드 등록 구분 · 판매일 기준 수수료 할인 적용</td><td>11/13 (적용 11/19)</td><td><span class="blank">확인 필요</span></td></tr>
-        <tr><td class="name">디자인</td><td>방송 오버레이 · QR 화면 · 쿠폰 등록 페이지</td><td>11/18</td><td><span class="blank">확인 필요</span></td></tr>
-        <tr><td class="name">개발</td><td>쿠폰 등록 페이지 · 코드 발급 · QR · 단축 URL</td><td>11/18</td><td><span class="blank">확인 필요</span></td></tr>
-        <tr><td class="name">데이터</td><td>추첨 · 거래 지표 · 쿠폰 전환 집계</td><td>11/18 · 11/29</td><td><span class="blank">확인 필요</span></td></tr>
+        <tr><td class="name">디자인</td><td><ul class="due">
+          <li><span class="d">11/12</span>사연 접수 페이지 · 얼리버드 공지 · CRM 이미지</li>
+          <li><span class="d">11/18</span>방송 오버레이 · QR 화면 · 쿠폰 등록 페이지</li>
+        </ul></td></tr>
+        <tr><td class="name">개발</td><td><ul class="due">
+          <li><span class="d">11/13</span>사연 접수 페이지 (로그인 · 동의 · 캡처 업로드)</li>
+          <li><span class="d">11/13</span>얼리버드 등록 구분 · 판매일 기준 수수료 할인 (적용 11/19)</li>
+          <li><span class="d">11/18</span>쿠폰 등록 페이지 · 코드 발급 · QR · 단축 URL</li>
+        </ul></td></tr>
+        <tr><td class="name">데이터</td><td><ul class="due">
+          <li><span class="d">11/18</span>사연 추첨</li>
+          <li><span class="d">11/29</span>거래 지표 · 쿠폰 전환 집계</li>
+        </ul></td></tr>
       </tbody>
     </table></div>
   </div>
