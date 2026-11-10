@@ -99,6 +99,21 @@ tr.total td{font-weight:700;border-top:2px solid var(--line)}
 .due{list-style:none;margin:0;padding:0;display:grid;gap:4px}
 .due li{display:grid;grid-template-columns:48px 1fr;gap:8px;align-items:baseline}
 .due .d{font-family:var(--mono);font-size:12px;color:var(--accent-ink);font-weight:600}
+.hero{background:var(--accent);color:var(--surface);border-radius:8px;padding:18px 20px;display:grid;gap:10px}
+.hero .hk{font-size:12px;font-weight:700;letter-spacing:.06em;opacity:.85}
+.hero p{margin:0;font-size:18px;font-weight:600;line-height:1.6;text-wrap:pretty}
+.hero mark{background:var(--surface);color:var(--accent-ink);font-weight:700;padding:1px 7px;border-radius:4px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.goals{display:flex;flex-wrap:wrap;gap:6px}
+.goals span{font-size:13px;border:1px solid currentColor;border-radius:999px;padding:2px 12px;opacity:.95}
+.goals b{margin-right:6px}
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.why>div{border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:var(--bg)}
+.why b{display:block;font-size:15px;margin-top:4px}
+.why p{margin:2px 0 0;font-size:13px;color:var(--muted);line-height:1.5}
+.wk{display:inline-block;font-size:11px;font-weight:700;padding:0 8px;border-radius:999px;background:var(--good-bg);color:var(--good)}
+.wk.warn{background:var(--warn-bg);color:var(--warn)}
+.stat b{color:var(--accent-ink)}
+.stat.key{background:var(--accent-soft);border-color:var(--accent)}
 footer{text-align:center;font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:20px}
 @media (prefers-reduced-motion:no-preference){section.panel{animation:fade .18s ease-out}@keyframes fade{from{opacity:.4}to{opacity:1}}}
 </style>
@@ -130,15 +145,19 @@ footer{text-align:center;font-size:13px;color:var(--muted);border-top:1px solid 
 <!-- 1 요약 -->
 <section class="panel" id="summary" role="tabpanel" aria-labelledby="t-summary">
   <h2>요약</h2>
-  <div class="block" style="border-left:4px solid var(--accent)">
-    <p><b>서버이전 기간에 BJ '러브하우스' 방송으로 당첨자 스펙업을 매니아 매물로 지원하고, 수수료 할인으로 제우스 매물을 확보합니다.</b></p>
+  <div class="hero">
+    <div class="hk">한 줄 요약</div>
+    <p>서버이전 기간, BJ '러브하우스' 방송으로 <mark>당첨자 스펙업 지원</mark> + 수수료 할인으로 <mark>제우스 매물 확보</mark></p>
+    <div class="goals"><span><b>이벤트 1</b> 라이브 아이템 지원</span><span><b>이벤트 2</b> 판매수수료 할인</span></div>
   </div>
 
-  <div class="block"><h3>기획 배경</h3><ul>
-    <li><b>이전 수요</b> — 장비 보강 · 정리 매물 증가</li>
-    <li><b>매물 부족</b> — 수요를 거래로 연결하기 어려움</li>
-    <li><b>배너 한계</b> — 노출만으로는 전환이 약해, 거래 과정을 방송으로 노출</li>
-  </ul></div>
+  <div class="block"><h3>기획 배경</h3>
+    <div class="why">
+      <div><span class="wk">기회</span><b>이전 수요</b><p>장비 보강 · 정리 매물 증가</p></div>
+      <div><span class="wk warn">문제</span><b>매물 부족</b><p>수요를 거래로 연결하기 어려움</p></div>
+      <div><span class="wk warn">문제</span><b>배너 한계</b><p>노출만으로는 전환이 약함 → 거래 과정을 방송으로</p></div>
+    </div>
+  </div>
 
   <div class="grid3">
     <div class="brand"><div class="k">메인 카피</div><div class="v">제우스 서버이전 준비는? 아이템매니아</div></div>
@@ -149,7 +168,7 @@ footer{text-align:center;font-size:13px;color:var(--muted);border-top:1px solid 
   <div class="stats">
     <div class="stat"><small>진행 BJ</small><b>1명</b></div>
     <div class="stat"><small>당첨</small><b>1명 (1회 파일럿)</b></div>
-    <div class="stat"><small>라이브</small><b>11/19~22 (19일 우선)</b></div>
+    <div class="stat key"><small>라이브</small><b>11/19~22 (19일 우선)</b></div>
     <div class="stat"><small>비용</small><b>협의 후 확정</b></div>
   </div>
 </section>
